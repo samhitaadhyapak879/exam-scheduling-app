@@ -15,7 +15,7 @@ public class SecurityConfig {
                 .disable()  // This will disable CSRF protection for testing purposes.
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/students/**","/api/exams/**", "/api/subjects/**").permitAll()  // Allow student endpoints
+                .requestMatchers("/api/students/**","/api/exams/**", "/api/subjects/**", "/api/questions/**", "/api/schedules/**", "/api/submissions/**", "/api/answers/**").permitAll()  // Allow student endpoints
                 .anyRequest().authenticated()                    // Require login for others
             )
             .formLogin(form -> form
