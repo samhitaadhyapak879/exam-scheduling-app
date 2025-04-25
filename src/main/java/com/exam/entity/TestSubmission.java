@@ -15,9 +15,6 @@ public class TestSubmission {
 	    private LocalDateTime startTime;
 	    private LocalDateTime endTime;
 
-	    @Column(length = 1000)
-	    private String answers; // Could store JSON or pipe-separated string of selected options
-
 	    @ManyToOne
 	    @JoinColumn(name = "student_id")
 	    private Student student;
@@ -28,11 +25,10 @@ public class TestSubmission {
 
 	    public TestSubmission() {}
 
-	    public TestSubmission(int score, LocalDateTime startTime, LocalDateTime endTime, String answers, Student student, Exam exam) {
+	    public TestSubmission(int score, LocalDateTime startTime, LocalDateTime endTime, Student student, Exam exam) {
 	        this.score = score;
 	        this.startTime = startTime;
 	        this.endTime = endTime;
-	        this.answers = answers;
 	        this.student = student;
 	        this.exam = exam;
 	    }
@@ -49,9 +45,6 @@ public class TestSubmission {
 
 	    public LocalDateTime getEndTime() { return endTime; }
 	    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
-
-	    public String getAnswers() { return answers; }
-	    public void setAnswers(String answers) { this.answers = answers; }
 
 	    public Student getStudent() { return student; }
 	    public void setStudent(Student student) { this.student = student; }

@@ -12,18 +12,22 @@ public class Exam {
     private Long id;
 
     private String name;
-    private String subject;
     private LocalDateTime examDate; // You can use LocalDateTime for date and time
     private int duration; // Duration in minutes
+    
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
+
 
     // Constructors
     public Exam() {}
 
-    public Exam(String name, String subject, LocalDateTime examDate, int duration) {
+    public Exam(String name, LocalDateTime examDate, int duration, Subject subject) {
         this.name = name;
-        this.subject = subject;
         this.examDate = examDate;
         this.duration = duration;
+        this.subject = subject;
     }
 
     // Getters and Setters
@@ -33,12 +37,12 @@ public class Exam {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public String getSubject() { return subject; }
-    public void setSubject(String subject) { this.subject = subject; }
-
     public LocalDateTime getExamDate() { return examDate; }
     public void setExamDate(LocalDateTime examDate) { this.examDate = examDate; }
 
     public int getDuration() { return duration; }
     public void setDuration(int duration) { this.duration = duration; }
+    
+    public Subject getSubject() { return subject; }
+    public void setSubject(Subject subject) { this.subject = subject; }
 }

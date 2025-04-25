@@ -3,7 +3,9 @@ import com.exam.entity.Answer;
 import com.exam.repository.AnswerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AnswerService {
@@ -31,6 +33,17 @@ public class AnswerService {
 
     public List<Answer> getAnswersBySubmission(Long submissionId) {
         return answerRepository.findByTestSubmissionId(submissionId);
+    }
+
+    public Map<String, Long> getOptionCounts(Long questionId) {
+        List<Object[]> results = answerRepository.countAnswersByOption(questionId);
+        Map<String, Long> counts = new HashMap<>();
+
+        for (Object[] row : results) {
+            counts.put((String) row[0], (Long) row[1]);
+        }
+
+        return counts;
     }
 
 

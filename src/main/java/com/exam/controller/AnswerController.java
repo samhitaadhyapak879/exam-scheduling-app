@@ -9,6 +9,7 @@ import com.exam.service.AnswerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/answers")
@@ -63,6 +64,12 @@ public class AnswerController {
     public List<Answer> getAnswersBySubmission(@PathVariable Long submissionId) {
         return answerService.getAnswersBySubmission(submissionId);
     }
+    
+    @GetMapping("/question/{questionId}/analytics")
+    public Map<String, Long> getOptionAnalytics(@PathVariable Long questionId) {
+        return answerService.getOptionCounts(questionId);
+    }
+
 
 
 }
