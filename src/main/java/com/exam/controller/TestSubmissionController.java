@@ -24,4 +24,13 @@ public class TestSubmissionController {
 	    public List<TestSubmission> getAll() {
 	        return submissionService.getAllSubmissions();
 	    }
+	    
+	    @PutMapping("/{id}")
+	    public TestSubmission updateSubmission(@PathVariable Long id, @RequestBody TestSubmission updatedSubmission) {
+	        TestSubmission existing = submissionService.getSubmissionById(id);
+	        existing.setScore(updatedSubmission.getScore());
+	        existing.setEndTime(updatedSubmission.getEndTime());
+	        return submissionService.updateSubmission(existing);
+	    }
+
 }

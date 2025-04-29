@@ -20,4 +20,13 @@ public class TestSubmissionService {
 	    public List<TestSubmission> getAllSubmissions() {
 	        return submissionRepository.findAll();
 	    }
+	    
+	    public TestSubmission getSubmissionById(Long id) {
+	        return submissionRepository.findById(id).orElseThrow();
+	    }
+
+	    public TestSubmission updateSubmission(TestSubmission submission) {
+	        return submissionRepository.save(submission);
+	    }
+
 }

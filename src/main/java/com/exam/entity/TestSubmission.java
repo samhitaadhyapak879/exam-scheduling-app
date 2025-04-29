@@ -2,6 +2,7 @@ package com.exam.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 
@@ -22,6 +23,13 @@ public class TestSubmission {
 	    @ManyToOne
 	    @JoinColumn(name = "exam_id")
 	    private Exam exam;
+	    
+	    @OneToMany(mappedBy = "testSubmission", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private List<Answer> answers;
+	    
+	    @OneToOne(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private Feedback feedback;
+
 
 	    public TestSubmission() {}
 

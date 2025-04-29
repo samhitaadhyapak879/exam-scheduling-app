@@ -64,12 +64,13 @@ function startExam(examId) {
     window.location.href = `take_test.html?examId=${examId}`;
 }
 
-// ✅ Automatically load exams if dashboard page is open
+//  Automatically load exams if dashboard page is open
 if (window.location.pathname.includes('student_dashboard.html')) {
     loadExams();
 }
 
 let questions = [];
+let answers = [];  // Store student's selected answers
 let currentQuestionIndex = 0;
 
 function loadQuestionsForExam(examId) {
@@ -104,14 +105,24 @@ function displayQuestion() {
 }
 
 function nextQuestion() {
-    // Save selected answer later
+    // Save selected answer
+    const selectedOption = document.querySelector('input[name="option"]:checked');
+    if (selectedOption) {
+        answers.push({
+            questionId: questions[currentQuestionIndex].id,
+            selectedOption: selectedOption.value
+        });
+    } else {
+        alert('Please select an option before proceeding.');
+        return;
+    }
+
 
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         displayQuestion();
     } else {
-        alert('Test Completed!');
-        // Later: Submit all answers
+        submitTest();
     }
 }
 
@@ -121,4 +132,143 @@ if (window.location.pathname.includes('take_test.html')) {
     const examId = urlParams.get('examId');
     loadQuestionsForExam(examId);
 }
+function submitTest() {
+    console.log('Submitting answers to backend:', answers);
+
+    const promises = answers.map(ans => {
+        return fetch('http://localhost:8080/api/answers', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                selectedOption: ans.selectedOption,
+                question: { id: ans.questionId },
+                student: { id: 1 }, // Hardcoded now (later dynamically use logged in student ID)
+                testSubmission: { id: testSubmissionId } // Hardcoded now (later link to test submission properly)
+            })
+        });
+    });
+
+    Promise.all(promises)
+        .then(() => {
+            console.log('Answers saved successfully.');
+
+            // ✅ After saving answers, calculate score and update TestSubmission
+            calculateAndUpdateTestSubmission();
+        })
+        .catch(error => {
+            console.error('Error submitting answers:', error);
+            alert('Error submitting test. Please try again.');
+        });
+}
+
+function calculateAndUpdateTestSubmission() {
+    fetch('http://localhost:8080/api/questions')
+        .then(response => response.json())
+        .then(allQuestions => {
+            let correctCount = 0;
+
+            answers.forEach(ans => {
+                const correctQuestion = allQuestions.find(q => q.id === ans.questionId);
+                if (correctQuestion && correctQuestion.correctOption === ans.selectedOption) {
+                    correctCount++;
+                }
+            });
+
+            console.log('Correct Answers:', correctCount);
+
+            const finalScore = Math.round((correctCount / answers.length) * 100); // Score in percentage
+            const endTime = new Date().toISOString();
+
+            // Now update the TestSubmission
+            fetch(`http://localhost:8080/api/submissions/${testSubmissionId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: testSubmissionId,
+                    score: finalScore,
+                    endTime: endTime
+                })
+            })
+            .then(response => response.json())
+            .then(updatedSubmission => {
+                console.log('TestSubmission updated successfully:', updatedSubmission);
+                alert(`Test completed! Your score: ${finalScore}%`);
+                window.location.href = 'student_dashboard.html';
+            })
+            .catch(error => {
+                console.error('Error updating TestSubmission:', error);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading questions for scoring:', error);
+        });
+}
+
+
+
+let timerDuration = 1 * 60; //  minutes for testing (later we can fetch from exam.duration)
+let timerInterval;
+
+function startTimer() {
+    let timeLeft = timerDuration;
+
+    timerInterval = setInterval(() => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+
+        document.getElementById('timer').innerText = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+        timeLeft--;
+
+        if (timeLeft < 0) {
+            clearInterval(timerInterval);
+            alert('Time is up! Test will be submitted.');
+            submitTest();
+        }
+    }, 1000);
+}
+if (window.location.pathname.includes('take_test.html')) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const examId = urlParams.get('examId');
+    //loadQuestionsForExam(examId);
+    //startTimer(); // Start timer when exam page loads ✅
+    createTestSubmission(examId);
+}
+
+let testSubmissionId = null; // 🔥 Save created submission ID here
+
+function createTestSubmission(examId) {
+    fetch('http://localhost:8080/api/submissions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            exam: { id: examId },
+            student: { id: 1 }, // Hardcoded now (later dynamic)
+            startTime: new Date().toISOString(), // Start time now
+            score: 0, // Will update later after test ends
+            answers: "" // Will update later
+        })
+    })
+    .then(response => response.json())
+    .then(submission => {
+        testSubmissionId = submission.id;
+        console.log('TestSubmission created with ID:', testSubmissionId);
+
+        // Now load questions and timer
+        loadQuestionsForExam(examId);
+        startTimer();
+    })
+    .catch(error => {
+        console.error('Error creating test submission:', error);
+        alert('Error starting test. Please try again.');
+    });
+}
+
+
 

@@ -7,7 +7,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import static org.springframework.security.config.Customizer.withDefaults; 
+import static org.springframework.security.config.Customizer.withDefaults;
+
+import java.util.List; 
 
 
 @Configuration
@@ -16,9 +18,9 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://127.0.0.1:5500"); // your VSCode Live Server URL
-        configuration.addAllowedMethod("*");  // Allow GET, POST, etc.
-        configuration.addAllowedHeader("*");  // Allow all headers
-        configuration.setAllowCredentials(true); // Important for cookies/session if needed
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
