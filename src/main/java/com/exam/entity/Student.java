@@ -3,6 +3,8 @@ package com.exam.entity;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "students")
 public class Student {
@@ -22,15 +24,18 @@ public class Student {
     // Link to User entity
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonBackReference
     private User user;
+    
+
+    // Placeholder for future scheduling (we’ll create Schedule entity soon)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Schedule> schedules;
     
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TestSubmission> submissions;
 
 
-    // Placeholder for future scheduling (we’ll create Schedule entity soon)
-     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-     private List<Schedule> schedules;
 
     // Constructors
     public Student() {}

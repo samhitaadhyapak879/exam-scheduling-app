@@ -33,7 +33,8 @@ async function deleteStudent(studentId, button) {
         
         if (response.ok) {
             alert('Student deleted successfully!');
-            loadStudents(); // Reload after delete
+            await loadStudents(); // Reload after delete
+            console.log("deleted successfully");
         } 
         else 
         {
@@ -50,7 +51,7 @@ async function deleteStudent(studentId, button) {
         }
 
     }
-    console.log("deleted successfully");
+
 }
 
 

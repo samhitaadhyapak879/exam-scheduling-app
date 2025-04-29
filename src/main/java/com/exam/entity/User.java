@@ -1,5 +1,7 @@
 package com.exam.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -17,6 +19,7 @@ public class User {
 	    
 	 // ✅ Add this if Student is linked to User
 	    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	    @JsonManagedReference
 	    private Student student;
 
 	    // Constructors
@@ -44,4 +47,13 @@ public class User {
 
 	    public String getRole() { return role; }
 	    public void setRole(String role) { this.role = role; }
+
+	    public Student getStudent() {
+	        return student;
+	    }
+
+	    public void setStudent(Student student) {
+	        this.student = student;
+	    }
+
 }

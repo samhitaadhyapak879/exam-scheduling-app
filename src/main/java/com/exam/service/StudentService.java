@@ -46,31 +46,31 @@ public class StudentService {
 	        }
 	    }
 
-//	    public void deleteStudent(Long id) {
-//	        studentRepository.deleteById(id);
-//	    }
-//	    public void deleteStudent(Long id) {
-//	        // ✅ Step 1: Delete dependent schedules to avoid foreign key issues
-//	        scheduleRepository.deleteAllByStudentId(id);
-//
-//	        // ✅ Step 2: Delete the student
-//	        studentRepository.deleteById(id);
-//	    }
+
 	    
 	    @Transactional  // ✅ Add this annotation
 	    public void deleteStudent(Long id) {
-	    	long startTime = System.currentTimeMillis();
-	        // Step 1: Delete schedules
+	    
+	    	// Step 1: Delete schedules
 	        scheduleRepository.deleteAllByStudentId(id);
 
 	        // Step 2: Delete test submissions
 	        testSubmissionRepository.deleteAllByStudentId(id);
 
-	        // Step 3: Delete student
-	        studentRepository.deleteById(id);
+	        // Step 3: Break link with User
+	        Student student = studentRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Student not found"));
+
+	        if (student.getUser() != null) {
+	            student.getUser().setStudent(null); // Break the link
+	        }
+
+	        student.setUser(null); // Break other side too, just to be safe
+	        studentRepository.save(student); // Update the record to remove link
+
+	        // Step 4: Delete the student
+	        studentRepository.delete(student);
 	        
-	        long endTime = System.currentTimeMillis();
-	        System.out.println("Deletion took " + (endTime - startTime) + "ms.");
 	    }
 
 }

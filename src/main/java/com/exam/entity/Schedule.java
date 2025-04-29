@@ -12,11 +12,11 @@ public class Schedule {
     private LocalDateTime scheduledDateTime;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "exam_id")
+    @JoinColumn(name = "exam_id", nullable = false)
     private Exam exam;
 
     // Constructors
