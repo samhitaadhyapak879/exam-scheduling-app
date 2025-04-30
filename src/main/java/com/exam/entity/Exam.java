@@ -2,6 +2,7 @@ package com.exam.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "exams")
@@ -18,6 +19,10 @@ public class Exam {
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
+    
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Question> questions;
+
 
 
     // Constructors

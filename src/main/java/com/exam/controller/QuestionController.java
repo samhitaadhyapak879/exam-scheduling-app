@@ -28,5 +28,11 @@ public class QuestionController {
     public List<Question> getByExam(@PathVariable Long examId) {
         return questionService.getQuestionsByExam(examId);
     }
+    
+    @DeleteMapping("/{id}")
+    public void deleteQuestion(@PathVariable Long id) {
+        questionService.deleteQuestion(id);
+    }
+
 
 }

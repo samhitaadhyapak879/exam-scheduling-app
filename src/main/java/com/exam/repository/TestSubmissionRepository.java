@@ -14,5 +14,11 @@ public interface TestSubmissionRepository extends JpaRepository<TestSubmission, 
 	 @Transactional
 	 @Query("DELETE FROM TestSubmission t WHERE t.student.id = :studentId")
 	 void deleteAllByStudentId(@Param("studentId") Long studentId);
+	 
+	 @Transactional
+	 @Modifying
+	 void deleteAllByExamId(Long examId);
+
+	
 }
 

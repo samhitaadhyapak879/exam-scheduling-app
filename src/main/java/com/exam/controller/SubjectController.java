@@ -17,6 +17,7 @@ public class SubjectController {
     public Subject createSubject(@RequestBody Subject subject) {
         return subjectService.createSubject(subject);
     }
+    
 
     @GetMapping
     public List<Subject> getAllSubjects() {

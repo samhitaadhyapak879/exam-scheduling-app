@@ -18,5 +18,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 	@Transactional
 	@Query("DELETE FROM Schedule s WHERE s.student.id = :studentId")
 	void deleteAllByStudentId(@Param("studentId") Long studentId);
+	
+	@Transactional
+    @Modifying
+    void deleteAllByExamId(Long examId);
 
 }

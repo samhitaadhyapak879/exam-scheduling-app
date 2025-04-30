@@ -1,5 +1,7 @@
 package com.exam.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -22,6 +24,7 @@ public class Question {
 
 	    @ManyToOne
 	    @JoinColumn(name = "exam_id")
+	    @JsonBackReference
 	    private Exam exam;
 
 	    // Constructors

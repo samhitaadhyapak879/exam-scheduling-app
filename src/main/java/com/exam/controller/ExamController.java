@@ -2,7 +2,7 @@ package com.exam.controller;
 
 import com.exam.entity.Exam;
 import com.exam.service.ExamService;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 public class ExamController {
 	 private final ExamService examService;
 
-	    @Autowired
+	   
 	    public ExamController(ExamService examService) {
 	        this.examService = examService;
 	    }
@@ -26,4 +26,10 @@ public class ExamController {
 	    public List<Exam> getAllExams() {
 	        return examService.getAllExams();
 	    }
+	    
+	    @DeleteMapping("/{id}")
+	    public void deleteExam(@PathVariable Long id) {
+	        examService.deleteExam(id);
+	    }
+
 }
