@@ -3,16 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <title>Take Test</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style1.css" />
 </head>
 <body>
-  <h1>Take Test</h1>
-  <h3>Time Remaining: <span id="timer">Loading...</span></h3>
+  <div class="container">
+    <h1>📝 Take Test</h1>
+    <h3>⏳ Time Remaining: <span id="timer">Loading...</span></h3>
 
-  <div id="test-container">
-    <h2 id="question-text">Loading question...</h2>
-    <div id="options"></div>
-    <button id="next-button" onclick="nextQuestion()">Next</button>
+    <div id="test-container" class="card">
+      <h2 id="question-text">Loading question...</h2>
+      <div id="options" class="options-box"></div>
+      <button class="primary-btn" id="next-button" onclick="nextQuestion()">Next</button>
+      <button class="primary-btn" onclick="clearSelection()">Clear Selection</button>
+      <button class="primary-btn" onclick="skipQuestion()">Skip</button>
+    </div>
   </div>
 
   <script src="script.js"></script>

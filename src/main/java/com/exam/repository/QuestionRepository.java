@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Modifying;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 	List<Question> findByExamId(Long examId);
+	List<Question> findBySubjectId(Long subjectId);
+
 	@Transactional
     @Modifying
     void deleteAllByExamId(Long examId);

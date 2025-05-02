@@ -1,6 +1,9 @@
 package com.exam.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.util.List;
+
+//import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -15,17 +18,21 @@ public class Question {
 	    private String optionB;
 	    private String optionC;
 	    private String optionD;
-
 	    private String correctOption;
 
 	    @ManyToOne
 	    @JoinColumn(name = "subject_id")
+	    @JsonIgnore
 	    private Subject subject;
 
 	    @ManyToOne
 	    @JoinColumn(name = "exam_id")
-	    @JsonBackReference
+	    @JsonIgnore  // prevent deep circular nesting
 	    private Exam exam;
+
+	    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+	    @JsonIgnore  // ✅ Prevent infinite loop from Question → Answer → Question
+	    private List<Answer> answers;
 
 	    // Constructors
 	    public Question() {}

@@ -43,6 +43,11 @@ public class QuestionService {
         return questionRepository.findByExamId(examId);
     }
     
+    public List<Question> getQuestionsBySubject(Long subjectId) {
+        return questionRepository.findBySubjectId(subjectId);
+    }
+
+    
     public void deleteQuestion(Long id) {
         questionRepository.deleteById(id);
     }

@@ -1,5 +1,11 @@
 package com.exam.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+//import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,14 +18,17 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "question_id")
+    @JsonIgnoreProperties({"exam", "subject", "answers"}) // ✅ allow questionText and correctOption only
     private Question question;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
+    @JsonIgnore
     private Student student;
     
     @ManyToOne
     @JoinColumn(name = "submission_id")
+    @JsonBackReference
     private TestSubmission testSubmission;
     
 

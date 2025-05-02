@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+//import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 
 public class TestSubmission {
@@ -18,16 +22,20 @@ public class TestSubmission {
 
 	    @ManyToOne
 	    @JoinColumn(name = "student_id", nullable = false)
+	    @JsonIgnoreProperties({"user", "schedules", "submissions"}) // ✅ prevent deep recursion
 	    private Student student;
 
 	    @ManyToOne
 	    @JoinColumn(name = "exam_id", nullable = false)
+	    @JsonIgnoreProperties({"questions", "schedules", "submissions", "subject"}) // ✅ prevent deep loop
 	    private Exam exam;
 	    
 	    @OneToMany(mappedBy = "testSubmission", cascade = CascadeType.ALL, orphanRemoval = true)
+	    @JsonManagedReference
 	    private List<Answer> answers;
 	    
 	    @OneToOne(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+	    @JsonManagedReference
 	    private Feedback feedback;
 
 
@@ -59,4 +67,21 @@ public class TestSubmission {
 
 	    public Exam getExam() { return exam; }
 	    public void setExam(Exam exam) { this.exam = exam; }
+	    
+	    public List<Answer> getAnswers() {
+	        return answers;
+	    }
+
+	    public void setAnswers(List<Answer> answers) {
+	        this.answers = answers;
+	    }
+
+	    public Feedback getFeedback() {
+	        return feedback;
+	    }
+
+	    public void setFeedback(Feedback feedback) {
+	        this.feedback = feedback;
+	    }
+
 }

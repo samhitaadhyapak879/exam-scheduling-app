@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Results</title>
+  <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+  <div class="container">
+    <h1>✅ Test Completed</h1>
+    <h2>Your Score: <span id="score-display">--</span>%</h2>
+
+    <h3>📋 Answer Sheet</h3>
+    <div id="review-container" class="content-box"></div>
+
+    <button class="primary-btn" onclick="window.location.href='student_dashboard.html'">🔙 Go to Dashboard</button>
+  </div>
+
+  <script>
+    const score = localStorage.getItem("lastScore");
+    const answers = JSON.parse(localStorage.getItem("answerSheet") || "[]");
+
+    document.getElementById("score-display").innerText = score;
+
+    const container = document.getElementById("review-container");
+    answers.forEach((entry, index) => {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <p><strong>Q${index + 1}:</strong> ${entry.questionText}</p>
+        <p>Your Answer: <strong>${entry.selectedOption || '❌ Skipped'}</strong></p>
+        <p>Correct Answer: <strong>${entry.correctOption}</strong></p>
+        <p style="color:${entry.isCorrect ? 'green' : 'red'};">
+          ${entry.isCorrect ? '✅ Correct' : '❌ Incorrect'}
+        </p>
+        <hr>
+      `;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

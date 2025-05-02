@@ -2,6 +2,8 @@ package com.exam.controller;
 
 import com.exam.entity.TestSubmission;
 import com.exam.service.TestSubmissionService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,11 +16,19 @@ public class TestSubmissionController {
 	    public TestSubmissionController(TestSubmissionService submissionService) {
 	        this.submissionService = submissionService;
 	    }
+	    
+	    @GetMapping("/{id}")
+	    public TestSubmission getSubmissionById(@PathVariable Long id) {
+	        return submissionService.getSubmissionById(id);
+	    }
+
 
 	    @PostMapping
-	    public TestSubmission submitTest(@RequestBody TestSubmission submission) {
-	        return submissionService.submitTest(submission);
+	    public ResponseEntity<TestSubmission> submitTest(@RequestBody TestSubmission submission) {
+	        TestSubmission saved = submissionService.submitTest(submission);
+	        return ResponseEntity.ok(saved); // ✅ return full object as JSON
 	    }
+
 
 	    @GetMapping
 	    public List<TestSubmission> getAll() {
@@ -32,5 +42,11 @@ public class TestSubmissionController {
 	        existing.setEndTime(updatedSubmission.getEndTime());
 	        return submissionService.updateSubmission(existing);
 	    }
+	    
+	    @GetMapping("/student/{studentId}")
+	    public List<TestSubmission> getSubmissionsByStudent(@PathVariable Long studentId) {
+	        return submissionService.getSubmissionsByStudent(studentId);
+	    }
+
 
 }

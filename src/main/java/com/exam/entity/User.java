@@ -17,6 +17,8 @@ public class User {
 	    private String password;
 	    private String role; // STUDENT or ADMIN
 	    
+	    private String resetToken; // For password reset link
+	    
 	 // ✅ Add this if Student is linked to User
 	    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	    @JsonManagedReference
@@ -47,6 +49,14 @@ public class User {
 
 	    public String getRole() { return role; }
 	    public void setRole(String role) { this.role = role; }
+	    
+	    public String getResetToken() {
+	        return resetToken;
+	    }
+
+	    public void setResetToken(String resetToken) {
+	        this.resetToken = resetToken;
+	    }
 
 	    public Student getStudent() {
 	        return student;

@@ -1,118 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin_style.css" />
 </head>
+
 <body>
+    <div class="dashboard-container">
+        <h1>Welcome, Admin</h1>
 
-    <h1>Welcome, Admin</h1>
+        <!-- Students -->
+        <h2>Manage Students</h2>
+        <div id="students-list"></div>
 
-    <h2>Manage Students</h2>
-    <div id="students-list"></div>
-
-    <h2>Manage Subjects</h2>
-    <div id="subjects-list"></div>
-
-    <h2>Manage Exams</h2>
-    <div id="exams-list"></div>
-
-    <h2>View Submissions</h2>
-    <div id="submissions-list"></div>
-
-    <h2>Scheduled Tests</h2>
-    <div id="scheduled-tests-list"></div>
-
-
-    <!-- add new subject -->
-
-    <h2>Add New Subject</h2>
-    <form id="add-subject-form">
-        <label for="new-subject-name">Subject Name:</label><br>
-        <input type="text" id="new-subject-name" required><br><br>
-        <button type="submit">Add Subject</button>
-    </form>
-
-    
-
-    <h2>Add New Exam</h2>
-    <form id="add-exam-form">
-        <label for="exam-name">Exam Name:</label><br>
-        <input type="text" id="exam-name" required><br>
-
-        <label for="exam-date">Date and Time:</label><br>
-        <input type="datetime-local" id="exam-date" required><br>
-
-        <label for="duration">Duration (mins):</label><br>
-        <input type="number" id="duration" required><br>
-
-        <label for="subject-select">Subject:</label><br>
-        <select id="subject-select" required>
-            <!-- Subjects will be loaded here dynamically -->
-        </select><br><br>
-
-        <button type="submit">Create Exam</button>
-    </form>
-
-    <hr>
-
-
-
-    <h3>Add Question</h3>
-        <form id="questionForm">
-            <input type="text" id="questionText" placeholder="Question Text" required><br>
-            <input type="text" id="optionA" placeholder="Option A" required><br>
-            <input type="text" id="optionB" placeholder="Option B" required><br>
-            <input type="text" id="optionC" placeholder="Option C" required><br>
-            <input type="text" id="optionD" placeholder="Option D" required><br>
-            <input type="text" id="correctOption" placeholder="Correct Option (A/B/C/D)" required><br>
-            <select id="examId" required>
-                <!-- populate with exam IDs -->
-            </select><br><br>
-            
-            <select id="question-subject-select" required>
-                <!-- already populated by loadSubjects() -->
-            </select><br><br>
-            <button type="submit">Add Question</button>
-        </form>
-        <div id="questionResult"></div>
-
-        <hr>
-
-    
-    <hr>
-
-        <h3>Schedule Test</h3>
-        <form id="schedule-form">
-            <label for="schedule-student-select">Select Student:</label><br>
-            <select id="schedule-student-select" required></select><br><br>
-
-            <label for="schedule-exam-select">Select Exam:</label><br>
-            <select id="schedule-exam-select" required></select><br><br>
-
-            <label for="schedule-datetime">Schedule Date & Time:</label><br>
-            <input type="datetime-local" id="schedule-datetime" required><br><br>
-
-            <button type="submit">Schedule Test</button>
-        </form>
-
-
-
-        <h3>View & Delete Questions</h3>
-        
-        <label for="exam-question-select">Select Exam:</label><br>
-        <select id="exam-question-select" required>
-            <!-- Exams will be loaded here -->
-        </select><br><br>
-        
-        <div id="questions-list">
-            <!-- Loaded questions will be displayed here -->
+        <!-- Subjects -->
+        <h2>Manage Subjects</h2>
+        <button class="toggle-button" onclick="toggleSection('add-subject')">+ Add Subject</button>
+        <div id="add-subject" class="form-section hidden">
+            <form id="add-subject-form">
+                <input type="text" id="new-subject-name" placeholder="Subject Name" required />
+                <button type="submit">Add Subject</button>
+            </form>
         </div>
-        
+        <div id="subjects-list"></div>
 
+        <!-- Exams -->
+        <h2>Manage Exams</h2>
+        <button class="toggle-button" onclick="toggleSection('add-exam')">+ Add Exam</button>
+        <div id="add-exam" class="form-section hidden">
+            <form id="add-exam-form">
+                <input type="text" id="exam-name" placeholder="Exam Name" required />
+                <input type="datetime-local" id="exam-date" required />
+                <input type="number" id="duration" placeholder="Duration (mins)" required />
+                <select id="subject-select" required></select>
+                <button type="submit">Add Exam</button>
+            </form>
+        </div>
+        <div id="exams-list"></div>
 
+        <!-- Questions -->
+        <h2>Manage Questions</h2>
+        <button class="toggle-button" onclick="toggleSection('add-question')">+ Add Question</button>
+        <div id="add-question" class="form-section hidden">
+            <form id="questionForm">
+                <input type="text" id="questionText" placeholder="Question Text" required />
+                <input type="text" id="optionA" placeholder="Option A" required />
+                <input type="text" id="optionB" placeholder="Option B" required />
+                <input type="text" id="optionC" placeholder="Option C" required />
+                <input type="text" id="optionD" placeholder="Option D" required />
+                <input type="text" id="correctOption" placeholder="Correct Option (A/B/C/D)" required />
+                <select id="examId" required></select>
+                <select id="question-subject-select" required></select>
+                <button type="submit">Add Question</button>
+            </form>
+        </div>
+
+        <label for="exam-question-select">View/Delete Questions for Exam:</label>
+        <select id="exam-question-select"></select>
+        <div id="questions-list"></div>
+
+        <!-- Scheduling -->
+        <h2>Schedule Tests</h2>
+        <button class="toggle-button" onclick="toggleSection('schedule-test')">+ Schedule Test</button>
+        <div id="schedule-test" class="form-section hidden">
+            <form id="schedule-form">
+                <label>Student:</label>
+                <select id="schedule-student-select" required></select>
+                <label>Exam:</label>
+                <select id="schedule-exam-select" required></select>
+                <input type="datetime-local" id="schedule-datetime" required />
+                <button type="submit">Schedule</button>
+            </form>
+        </div>
+        <div id="scheduled-tests-list"></div>
+        <button onclick="logout()">Logout</button>
+
+    </div>
 
     <script src="admin_script.js"></script>
 </body>
+
 </html>

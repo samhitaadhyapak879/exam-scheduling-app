@@ -3,13 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <title>Student Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="student_style.css" />
 </head>
 <body>
-  <h1>Welcome, Student!</h1>
+  <div class="container">
+    <h1>Welcome, Student!</h1>
 
-  <h2>Upcoming Exams:</h2>
-  <div id="scheduled-tests-list"></div>
+    <section class="card">
+      <h2>📆 Scheduled Exams</h2>
+      <div id="scheduled-tests-list" class="content-box"></div>
+    </section>
+
+    <section class="card">
+      <h2>🧪 Take Mock Test by Subject</h2>
+      <select id="mock-subject-select"></select>
+      <button class="primary-btn" onclick="startMockTest()">Start Mock Test</button>
+    </section>
+
+    <section class="card">
+      <h2>📜 Your Test History</h2>
+      <div id="test-history-list" class="content-box"></div>
+    </section>
+    <button onclick="logout()">Logout</button>
+
+  </div>
 
   <script src="script.js"></script>
 </body>

@@ -1,5 +1,7 @@
 package com.exam.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +17,7 @@ public class Feedback {
 
     @OneToOne
     @JoinColumn(name = "submission_id")
+    @JsonBackReference
     private TestSubmission submission;
 
     public Feedback() {}
